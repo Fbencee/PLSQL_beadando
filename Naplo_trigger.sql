@@ -4,15 +4,12 @@ SELECT * FROM (SELECT hivasId FROM HIVAS ORDER BY idopont desc) WHERE ROWNUM <= 
 
 CREATE OR REPLACE TRIGGER feltoltnaplo AFTER insert ON HIVAS 
 DECLARE
- hivas_rec   hivas%ROWTYPE;
- mentok number;
- hivasid hivas.hivasId%TYPE;
+sor hivas%ROWTYPE;
 BEGIN
- hivasid := SELECT * FROM (SELECT hivasId FROM HIVAS ORDER BY idopont desc) WHERE ROWNUM <= 1;
- mentok := SELECT COUNT(*) FROM H_A WHERE hivasId = hivasid;
- if mentok == 0 then
-  INSERT INTO NAPLO VAUES (naplo_sqe.nextval, SYSDATE + 300, SELECT USER FROM DUAL, TRUE, hivasid);
- else
-  INSERT INTO NAPLO VAUES (naplo_sqe.nextval, SYSDATE, SELECT USER FROM DUAL, FALSE, hivasid);
- end if;
+ SELECT * INTO sor FROM HIVAS WHERE hivasId = (SELECT * FROM (SELECT hivasId FROM HIVAS ORDER BY idopont desc) WHERE ROWNUM <= 1);
+ 
+ IF (sor.mentotkuld = 1) then
+  INSERT INTO NAPLO VAUES (naplo_sqe.nextval, SYSDATE + 300, SELECT USER FROM DUAL, sor.hivasId);
+ END IF;
+
 END;
