@@ -2,7 +2,7 @@
 create or replace PACKAGE mentoszolgalat is
   PROCEDURE FELTOLTLALK;
   PROCEDURE FELTOLTAUTO;
-  PROCEDURE UJHIVAS(p_id number, p_idopont date, p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2);
+  PROCEDURE UJHIVAS(p_id number, p_idopont date, p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int);
   FUNCTION RAND_B return VARCHAR2;
   FUNCTION RAND_TIP return VARCHAR2;
 end;
@@ -59,9 +59,9 @@ create or replace PACKAGE BODY mentoszolgalat is
     END LOOP;
    END;
 
-   PROCEDURE ujhivas(p_id number, p_idopont date, p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2) is
+   PROCEDURE ujhivas(p_id number, p_idopont date, p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int) is
    begin
-        insert into hivas values(p_id, p_idopont, p_hivo, p_helyszin, p_leiras);
+        insert into hivas values(p_id, p_idopont, p_hivo, p_helyszin, p_leiras, p_mentotkuld);
    exception
     when others then
     dbms_output.put_line('Valami hiba történt!');
