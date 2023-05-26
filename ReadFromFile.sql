@@ -1,6 +1,3 @@
-
-CREATE SEQUENCE beteg_sqe INCREMENT BY 1 START WITH 1;
-
 create or replace procedure beteg_feltolt as
   F UTL_FILE.FILE_TYPE;
   sor varchar2(200);
