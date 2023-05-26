@@ -7,9 +7,9 @@ DECLARE
 sor hivas%ROWTYPE;
 BEGIN
  SELECT * INTO sor FROM HIVAS WHERE hivasId = (SELECT * FROM (SELECT hivasId FROM HIVAS ORDER BY idopont desc) WHERE ROWNUM <= 1);
- 
- IF (sor.mentotkuld = 1) then
-  INSERT INTO NAPLO VAUES (naplo_sqe.nextval, SYSDATE + 300, SELECT USER FROM DUAL, sor.hivasId);
+ IF (sor.mentotkuld >= 1) then
+  INSERT INTO NAPLO VALUES (naplo_sqe.nextval, SYSDATE, (SELECT USER FROM DUAL), sor.hivasId);
  END IF;
+END;
 
 END;
