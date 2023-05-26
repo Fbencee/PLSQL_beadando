@@ -10,7 +10,6 @@ create or replace procedure beteg_feltolt as
   c4 varchar(30);
 begin
   F := UTL_FILE.FOPEN('DOP','betegek.txt','R');
-  begin
     loop
        UTL_FILE.GET_LINE(F,sor,100);
 
@@ -23,9 +22,10 @@ begin
        c3 := SUBSTR(sor, 1, INSTR(sor, ',') - 1);
        c4 := SUBSTR(sor, INSTR(sor, ',') + 1);
 
-       INSERT INTO TABLE beteg VALUES(beteg_sqe.nextval,c1,c2,c3,c4);
+       INSERT INTO beteg VALUES(beteg_sqe.nextval,c1,c2,c3,c4);
     end loop;
+    UTL_FILE.FCLOSE(F);
    exception
       when others then 
-         DBMS_OUTPUT.put_line(Nem sikerült a feltöltés!);
+         DBMS_OUTPUT.put_line('Nem sikerült a feltöltés!');
   end;
