@@ -1,0 +1,4 @@
+CREATE OR REPLACE FUNCTION hivasokszama(p_datum varchar2(20)) RETURN NUMBER is
+BEGIN
+  SELECT COUNT(*) FROM HIVAS WHERE idopont > TO_TIMESTAMP(p_datum,'YYYY/MM/DD') AND idopont < TO_TIMESTAMP(p_datum,'YYYY/MM/DD');
+END;
