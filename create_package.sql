@@ -1,7 +1,7 @@
 create or replace PACKAGE mentoszolgalat is
   PROCEDURE FELTOLTLALK;
   PROCEDURE FELTOLTAUTO;
-  PROCEDURE UJHIVAS(p_id number, p_idopont date, p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int);
+  PROCEDURE UJHIVAS(p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int);
   PROCEDURE BETEG_FELTOLT;
   PROCEDURE hivasok_beteg(p_beteg varchar2);
   PROCEDURE hivasok_datum(p_idopont1 varchar2, p_idopont2 varchar2);
@@ -63,9 +63,10 @@ create or replace PACKAGE BODY mentoszolgalat is
     END LOOP;
    END;
 
-   PROCEDURE ujhivas(p_id number, p_idopont date, p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int) is
+   PROCEDURE ujhivas(p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int) is
    begin
-        insert into hivas values(p_id, p_idopont, p_hivo, p_helyszin, p_leiras, p_mentotkuld);
+        insert into hivas values(hivas_sqe.nextval, TO_TIMESTAMP(TO_CHAR(SYSDATE, 'MM-DD-YYYY HH24:MI:SS'),'MM-DD-YYYY HH24:MI:SS','NLS_DATE_LANGUAGE=AMERICAN'), p_hivo, p_helyszin, p_leiras, 
+                                  p_mentotkuld);
    exception
     when others then
     dbms_output.put_line('Valami hiba történt!');
