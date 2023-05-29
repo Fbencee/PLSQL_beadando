@@ -3,7 +3,7 @@ create or replace PACKAGE mentoszolgalat is
   PROCEDURE FELTOLTAUTO;
   PROCEDURE UJHIVAS(p_hivo varchar2, p_helyszin varchar2, p_leiras varchar2, p_mentotkuld int);
   PROCEDURE BETEG_FELTOLT;
-  PROCEDURE hivasok_beteg(p_beteg varchar2);
+  PROCEDURE hivasok_beteg(p_beteg varchar2,p_result OUT SYS_REFCURSOR);
   PROCEDURE hivasok_datum(p_idopont1 varchar2, p_idopont2 varchar2);
   PROCEDURE hivasok(p_hivo varchar2);
   PROCEDURE DELETETABLAK;
@@ -102,21 +102,12 @@ create or replace PACKAGE BODY mentoszolgalat is
        DBMS_OUTPUT.put_line('Nem sikerült a feltöltés!');
   end;
 
-  PROCEDURE hivasok(p_hivo varchar2) is
+  PROCEDURE hivasok(p_hivo VARCHAR2, p_result OUT SYS_REFCURSOR) IS
   BEGIN
-    FOR hivasok IN (SELECT * FROM hivas WHERE hivo = p_hivo) LOOP
-      DBMS_OUTPUT.PUT_LINE('Hívás ID: ' || hivasok.hivasId);
-      DBMS_OUTPUT.PUT_LINE('Hívás dátuma: ' || hivasok.idopont);
-      DBMS_OUTPUT.PUT_LINE('Hívó neve: ' || hivasok.hivo);
-      DBMS_OUTPUT.PUT_LINE('Hívás helyszine: ' || hivasok.helyszin);
-      DBMS_OUTPUT.PUT_LINE('Hívás leírása: ' || hivasok.leiras);
-      IF hivasok.mentotkuld = 1 THEN
-       DBMS_OUTPUT.PUT_LINE('Mentő kiküldve.');
-      ELSE
-       DBMS_OUTPUT.PUT_LINE('Nincs mentő küldve.');
-      END IF;
-      DBMS_OUTPUT.PUT_LINE('-------------------');
-    END LOOP;
+   OPEN p_result FOR
+    SELECT hivasId, idopont, hivo, helyszin, leiras, mentotkuld
+    FROM hivas
+    WHERE hivo = p_hivo;
   END;
 
   PROCEDURE hivasok_datum(p_idopont1 varchar2, p_idopont2 varchar2) is
