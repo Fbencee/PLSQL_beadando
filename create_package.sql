@@ -6,6 +6,7 @@ create or replace PACKAGE mentoszolgalat is
   PROCEDURE hivasok_beteg(p_beteg varchar2);
   PROCEDURE hivasok_datum(p_idopont1 varchar2, p_idopont2 varchar2);
   PROCEDURE hivasok(p_hivo varchar2);
+  PROCEDURE DELETETABLAK;
   FUNCTION RAND_B return VARCHAR2;
   FUNCTION RAND_TIP return VARCHAR2;
   FUNCTION hivasokszama(p_datum varchar2) RETURN NUMBER;
@@ -154,6 +155,16 @@ create or replace PACKAGE BODY mentoszolgalat is
   BEGIN
    SELECT COUNT(*) INTO hivasok FROM HIVAS WHERE idopont > TO_TIMESTAMP(p_datum,'YYYY/MM/DD') AND idopont < (TO_TIMESTAMP(p_datum, 'YYYY/MM/DD') + interval '1' day);
    RETURN hivasok;
+  END;
+
+  PROCEDURE deletetablak is
+  BEGIN
+   DELETE FROM ALKALMAZOTT;
+   DELETE FROM H_A;
+   DELETE FROM AUTO;
+   DELETE FROM BETEG;
+   DELETE FROM NAPLO;
+   DELETE FROM HIVAS;
   END;
   
 
