@@ -9,5 +9,3 @@ BEGIN
   INSERT INTO NAPLO VALUES (naplo_sqe.nextval, sysdate + (1/1440)*minutes, (SELECT USER FROM DUAL), sor.hivasId);
  END IF;
 END;
-
-END;
